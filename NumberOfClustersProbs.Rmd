@@ -1,0 +1,76 @@
+---
+title: "NumberOfClusters"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Computing the indexes por different m values and a given number of realizations
+
+Data for age greater than 60. We are testing the optimum cluster number to optimize fuzzy c-means clustering 
+
+First we have to import the data with the multi correspondence analysis done and the script to compute the fuzzy cmeans indexes to validate the optimum number of clusters
+
+```{r loading, cache=FALSE,echo=TRUE}
+setwd("X:\\Analysis internship\\GitHub/")
+# setwd("C:\\Users\\Albert.Roso\\Dropbox\\Albert_Roso_internship\\ARC\\Baseline")
+load("PCAmix_BL.RData")
+source('indexes.R')
+# source('C:\\Users\\Albert.Roso\\Dropbox\\Albert_Roso_internship\\indexes.R')
+dim(data)
+head(data)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+library(doSNOW)
+```
+
+Especifying the number of realizations and number of clusters and parallelization
+```{r setting, cache=FALSE,echo=TRUE}
+realizations <- 100
+number.clusters <- 2:20
+pca <- data
+
+cl<-makeCluster(16)
+registerDoSNOW(cl)
+set.seed(123)
+```
+
+## Indexes computation for different m values
+
+# m=1.1 (A low value, similar to k-means distribution)
+```{r m=1.1, cache=TRUE,echo=TRUE}
+indexes.m1.1 <- indexes(pca,number.clusters,realizations,m=1.1) 
+```
+
+# m=1.2 
+```{r m=1.2, cache=TRUE,echo=TRUE}
+indexes.m1.2 <- indexes(pca,number.clusters,realizations,m=1.2) 
+```
+
+# m=1.4 
+```{r m=1.4, cache=TRUE,echo=TRUE}
+indexes.m1.4 <- indexes(pca,number.clusters,realizations,m=1.4) 
+```
+
+# m=1.5 
+```{r m=1.5, cache=TRUE,echo=TRUE}
+indexes.m1.5 <- indexes(pca,number.clusters,realizations,m=1.5) 
+```
+
+# m=2 (Typical value)
+```{r m=2, cache=TRUE,echo=TRUE}
+indexes.m2 <- indexes(pca,number.clusters,realizations,m=2) 
+```
+
+# m=4 (A large value)
+```{r m=4, cache=TRUE,echo=TRUE}
+indexes.m4 <- indexes(pca,number.clusters,realizations,m=4) 
+```
+
+# Save data
+```{r m=4, cache=TRUE,echo=TRUE}
+save.image("Indexes_data_BL.Rdata")
+```

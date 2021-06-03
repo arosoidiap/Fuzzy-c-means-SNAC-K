@@ -1,0 +1,135 @@
+---
+title: "Index Result Plot"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Plotting the different indexes for cmeans
+
+Data for age greater than 65. We are testing the optimum cluster number to optimize fuzzy c-means clustering 
+
+First we have to import the required packages and the index data
+
+```{r loading, cache=FALSE,echo=FALSE}
+library(ggplot2)
+library(plyr)
+library(dplyr)
+
+setwd("X:\\Analysis internship\\GitHub/")
+# setwd("C:\\Users\\Albert.Roso\\Dropbox\\Albert_Roso_internship\\ARC")
+load("Indexes_data_BL.Rdata")
+dim(data)
+head(data)
+```
+
+
+## Fukuyama index
+Optimum Fukuyama index has to be minimum
+```{r fukuyama, cache=FALSE}
+
+fukuyama.dataframe.m1.1 <- ldply(indexes.m1.1$fukuyama.ave)
+fukuyama.dataframe.m1.2 <- ldply(indexes.m1.2$fukuyama.ave)
+fukuyama.dataframe.m1.4 <- ldply(indexes.m1.4$fukuyama.ave)
+fukuyama.dataframe.m1.5 <- ldply(indexes.m1.5$fukuyama.ave)
+fukuyama.dataframe.m2 <- ldply(indexes.m2$fukuyama.ave)
+fukuyama.dataframe.m4 <- ldply(indexes.m4$fukuyama.ave)
+
+
+
+#Options to plot the comparisons per m
+
+ggplot() + geom_line(aes(color="m=1.1",x=number.clusters,y=fukuyama.dataframe.m1.1$V1)) +
+  geom_line(aes(color="m=1.2",x=number.clusters,y=fukuyama.dataframe.m1.2$V1))+
+  geom_line(aes(color="m=1.4",x=number.clusters,y=fukuyama.dataframe.m1.4$V1))+
+geom_line(aes(color="m=1.5",x=number.clusters,y=fukuyama.dataframe.m1.5$V1)) + geom_line(aes(color="m=2",x=number.clusters,y=fukuyama.dataframe.m2$V1)) + geom_line(aes(color="m=4",x=number.clusters,y=fukuyama.dataframe.m4$V1)) + labs(color="m parameter")+xlab("number of clusters")+ylab("Fukuyama index") + ggtitle("Fukuyama index average per 100 realizations vs number of clusters")+
+  scale_x_continuous(breaks=2:20)
+```
+
+
+
+## Xie-Beni index
+Optimum Xie-Beni index has to be minimum
+```{r Xie-Beni, cache=FALSE}
+xie.dataframe.m1.1 <- ldply(indexes.m1.1$xie.ave)
+xie.dataframe.m1.2 <- ldply(indexes.m1.2$xie.ave)
+xie.dataframe.m1.4 <- ldply(indexes.m1.4$xie.ave)
+xie.dataframe.m1.5 <- ldply(indexes.m1.5$xie.ave)
+xie.dataframe.m2 <- ldply(indexes.m2$xie.ave)
+xie.dataframe.m4 <- ldply(indexes.m4$xie.ave)
+
+
+
+#Options to plot the comparisons per m
+
+ggplot() + geom_line(aes(color="m=1.1",x=number.clusters,y=xie.dataframe.m1.1$V1)) +
+  geom_line(aes(color="m=1.2",x=number.clusters,y=xie.dataframe.m1.2$V1))+
+  geom_line(aes(color="m=1.4",x=number.clusters,y=xie.dataframe.m1.4$V1))+
+  geom_line(aes(color="m=1.5",x=number.clusters,y=xie.dataframe.m1.5$V1)) + geom_line(aes(color="m=2",x=number.clusters,y=xie.dataframe.m2$V1)) + labs(color="m parameter")+ geom_line(aes(color="m=4",x=number.clusters,y=xie.dataframe.m4$V1)) + xlab("number of clusters")+ylab("Xie Beni index") + ggtitle("Xie Beni index average per 100 realizations vs number of clusters")+  scale_y_continuous(breaks=seq(0,0.001,0.0001),limits=c(0,0.0012))+scale_x_continuous(breaks=2:20)
+```
+
+
+
+## Partition coefficient index
+Optimum Partition coefficient index has to be maximum
+```{r part.coeff, cache=FALSE}
+part.coeff.dataframe.m1.1 <- ldply(indexes.m1.1$part.coeff.ave)
+part.coeff.dataframe.m1.2 <- ldply(indexes.m1.2$part.coeff.ave)
+part.coeff.dataframe.m1.4 <- ldply(indexes.m1.4$part.coeff.ave)
+part.coeff.dataframe.m1.5 <- ldply(indexes.m1.5$part.coeff.ave)
+part.coeff.dataframe.m2 <- ldply(indexes.m2$part.coeff.ave)
+part.coeff.dataframe.m4 <- ldply(indexes.m4$part.coeff.ave)
+
+
+
+#Options to plot the comparisons per m
+
+ggplot() + geom_line(aes(color="m=1.1",x=number.clusters,y=part.coeff.dataframe.m1.1$V1)) +
+  geom_line(aes(color="m=1.2",x=number.clusters,y=part.coeff.dataframe.m1.2$V1)) +
+  geom_line(aes(color="m=1.4",x=number.clusters,y=part.coeff.dataframe.m1.4$V1)) +
+  geom_line(aes(color="m=1.5",x=number.clusters,y=part.coeff.dataframe.m1.5$V1)) + geom_line(aes(color="m=2",x=number.clusters,y=part.coeff.dataframe.m2$V1)) + geom_line(aes(color="m=4",x=number.clusters,y=part.coeff.dataframe.m4$V1)) + labs(color="m parameter")+xlab("number of clusters")+ylab("Partition coefficient index") + ggtitle("Partition coefficient index average per 100 realizations vs number of clusters")+scale_x_continuous(breaks=2:20)
+```
+
+
+
+## Partition entropy index
+Optimum Partition entropy index has to be minimum
+```{r part.ent, cache=FALSE}
+part.ent.dataframe.m1.1 <- ldply(indexes.m1.1$part.ent.ave)
+part.ent.dataframe.m1.2 <- ldply(indexes.m1.2$part.ent.ave)
+part.ent.dataframe.m1.4 <- ldply(indexes.m1.4$part.ent.ave)
+part.ent.dataframe.m1.5 <- ldply(indexes.m1.5$part.ent.ave)
+part.ent.dataframe.m2 <- ldply(indexes.m2$part.ent.ave)
+part.ent.dataframe.m4 <- ldply(indexes.m4$part.ent.ave)
+
+
+ggplot() + geom_line(aes(color="m=1.1",x=number.clusters,y=part.ent.dataframe.m1.1$V1)) +
+  geom_line(aes(color="m=1.2",x=number.clusters,y=part.ent.dataframe.m1.2$V1))+
+geom_line(aes(color="m=1.4",x=number.clusters,y=part.ent.dataframe.m1.4$V1))+
+geom_line(aes(color="m=1.5",x=number.clusters,y=part.ent.dataframe.m1.5$V1)) + geom_line(aes(color="m=2",x=number.clusters,y=part.ent.dataframe.m2$V1)) + geom_line(aes(color="m=4",x=number.clusters,y=part.ent.dataframe.m4$V1)) + labs(color="m parameter")+xlab("number of clusters")+ylab("Partition entropy index") + ggtitle("Partition entropy index average per 100 realizations vs number of clusters")+scale_x_continuous(breaks=2:20)
+```
+
+
+## Calinski-Harabasz index
+Calinski-Harabasz index has to be maximum
+```{r calinski, cache=FALSE}
+calinski.dataframe.m1.1 <- ldply(indexes.m1.1$calinski.ave)
+calinski.dataframe.m1.2 <- ldply(indexes.m1.2$calinski.ave)
+calinski.dataframe.m1.4 <- ldply(indexes.m1.4$calinski.ave)
+calinski.dataframe.m1.5 <- ldply(indexes.m1.5$calinski.ave)
+calinski.dataframe.m2 <- ldply(indexes.m2$calinski.ave)
+calinski.dataframe.m4 <- ldply(indexes.m4$calinski.ave)
+
+
+ggplot() + geom_line(aes(color="m=1.1",x=number.clusters,y=calinski.dataframe.m1.1$V1)) +
+  geom_line(aes(color="m=1.2",x=number.clusters,y=calinski.dataframe.m1.2$V1)) +
+  geom_line(aes(color="m=1.4",x=number.clusters,y=calinski.dataframe.m1.4$V1)) +geom_line(aes(color="m=1.5",x=number.clusters,y=calinski.dataframe.m1.5$V1)) + geom_line(aes(color="m=2",x=number.clusters,y=calinski.dataframe.m2$V1)) + geom_line(aes(color="m=4",x=number.clusters,y=calinski.dataframe.m4$V1)) +labs(color="m parameter")+xlab("number of clusters")+ylab("Calinski-Harabasz index") + ggtitle("Calinski-Harabasz index average per 100 realizations vs number of clusters")+scale_x_continuous(breaks=2:20)
+```
+
+## Optimum cluster number conclusion
+The best number of clusters to develop the fuzzy clustering over this dataset
+
